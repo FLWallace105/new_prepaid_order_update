@@ -26,10 +26,25 @@ task :setup_inventory_size_breaks do |t|
 
 end
 
+desc 'setup parent prepaid subscriptions to be update to match orders'
+task :setup_parent_prepaid_subs do |t|
+    FixPrepaidOrders::ChangePrepaid.new.setup_update_matching_subscriptions
+end
+
+desc 'setup parent prepaid subs CONFIG info for updating subs'
+task :setup_subs_config_info do |t|
+    FixPrepaidOrders::ChangePrepaid.new.load_prepaid_subs_config
+end
+
 desc 'upate orders in Recharge'
 task :update_orders do |t|
     FixPrepaidOrders::ChangePrepaid.new.update_prepaid_orders
 
+end
+
+desc 'update parent prepaid subs to match orders in ReCharge'
+task :update_parent_subs do |t|
+    FixPrepaidOrders::ChangePrepaid.new.update_prepaid_subs
 end
 
 
