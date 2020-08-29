@@ -47,6 +47,17 @@ task :update_parent_subs do |t|
     FixPrepaidOrders::ChangePrepaid.new.update_prepaid_subs
 end
 
+desc 'clean up orders messed up by Scoutside'
+task :cleanup_scoutside_orders do |t|
+    FixPrepaidOrders::ChangePrepaid.new.cleanup_scoutside_orders
+end
+
+desc 'cleanup parent prepaid subs messed up by Scoutside'
+task :cleanup_scoutside_prepaid_subs do |t|
+    FixPrepaidOrders::ChangePrepaid.new.fix_scoutside_prepaid_subs
+
+end
+
 
 
 end
