@@ -162,13 +162,13 @@ module FixPrepaidOrders
 
                 case my_title
                 when /\s2\sitem/i
-                    my_product_collection = "Mix and Match - 2 Items"
+                    my_product_collection = "Balanced Beige - 2 Items"
                 when /\s3\sitem/i
-                    my_product_collection = "Mix and Match - 3 Items"
+                    my_product_collection = "Balanced Beige - 3 Items"
                 when /\s5\sitem/i
-                    my_product_collection = "Mix and Match - 5 Items"
+                    my_product_collection = "Balanced Beige - 5 Items"
                 when "3 MONTHS"
-                    my_product_collection = "Mix and Match - 5 Items"
+                    my_product_collection = "Balanced Beige - 5 Items"
                 end
 
 
@@ -203,12 +203,14 @@ module FixPrepaidOrders
       
           end
 
-          def can_allocate(tops, leggings, bra, two_item)
+          def can_allocate(tops, leggings, jacket, two_item)
             tops_avail = false
             leggings_avail = false
             bra_avail = false
+            jacket_avail = false
             leggings_avail_inventory = OrderUpdatedInventorySize.where("product_type = ? and product_size = ?", "leggings", leggings).first
             tops_avail_inventory = OrderUpdatedInventorySize.where("product_type = ? and product_size = ?", "tops", tops).first
+            jacket_avail_inventory = OrderUpdatedInventorySize.where("product_type = ? and product_size = ?", "sports-jacket", jacket).first
 
             if leggings_avail_inventory.inventory_avail > 0
                 leggings_avail = true
@@ -222,19 +224,21 @@ module FixPrepaidOrders
                 tops_avail = false
             end
 
+            
+
             unless two_item
-                bra_avail_inventory = OrderUpdatedInventorySize.where("product_type = ? and product_size = ?", "sports-bra", bra).first
+                jacket_avail_inventory = OrderUpdatedInventorySize.where("product_type = ? and product_size = ?", "sports-jacket", jacket).first
                 if bra_avail_inventory.inventory_avail > 0
-                    bra_avail = true
+                    jacket_avail = true
                 else
-                    bra_avail = false
+                    jacket_avail = false
                 end
             else
                 #its a two item, we "have" bra size available
-                bra_avail = true
+                jacket_avail = true
             end
 
-            if tops_avail && leggings_avail && bra_avail
+            if tops_avail && leggings_avail && jacket_avail
                 leggings_avail_inventory.inventory_avail -= 1
                 tops_avail_inventory.inventory_avail -= 1
                 leggings_avail_inventory.inventory_assigned += 1
@@ -242,12 +246,12 @@ module FixPrepaidOrders
                 leggings_avail_inventory.save!
                 tops_avail_inventory.save!
                 unless two_item
-                    bra_avail_inventory = OrderUpdatedInventorySize.where("product_type = ? and product_size = ?", "sports-bra", bra).first
-                    bra_avail_inventory.inventory_avail -= 1
-                    bra_avail_inventory.inventory_assigned += 1
-                    bra_avail_inventory.save! 
+                    jacket_avail_inventory = OrderUpdatedInventorySize.where("product_type = ? and product_size = ?", "sports-bra", bra).first
+                    jacket_avail_inventory.inventory_avail -= 1
+                    jacket_avail_inventory.inventory_assigned += 1
+                    jacket_avail_inventory.save! 
                 else
-                    puts "not adjusting bra inventory as its a two item"
+                    puts "not adjusting jacket inventory as its a two item"
                     
                 end
 
@@ -340,11 +344,11 @@ module FixPrepaidOrders
                 end
 
                 #Commented out below to remove size break functionality for inventory
-                #allocate_ok = can_allocate(temp_tops, temp_leggings, temp_sports_bra, two_item_collection)
-                #puts allocate_ok
+                allocate_ok = can_allocate(temp_tops, temp_leggings, temp_sports_jacket, two_item_collection)
+                puts allocate_ok
 
 
-                allocate_ok = true
+                #allocate_ok = true
                 if allocate_ok
                     #myord.is_updated = 't'
                     #myord.save!
