@@ -58,6 +58,27 @@ task :cleanup_scoutside_prepaid_subs do |t|
 
 end
 
+desc 'check on scoutside bad subs product_collection properties'
+task :check_scoutside_subs_properties do |t|
+    FixPrepaidOrders::ChangePrepaid.new.scoutside_subs_check_product_collection
+end
+
+desc 'check child orders from fixed scoutside subs'
+task :check_child_orders_from_subs do |t|
+    FixPrepaidOrders::ChangePrepaid.new.check_child_orders_fixed_subs
+end
+
+desc 'setup prepaid orders with missing price'
+task :setup_prepaid_orders_missing_price do |t|
+    FixPrepaidOrders::ChangePrepaid.new.setup_fix_prepaid_orders_missing_price
+end
+
+desc 'fix broken price orders also subscription id info'
+task :fix_broken_price_orders do |t|
+    FixPrepaidOrders::ChangePrepaid.new.update_broken_price_prepaid_orders
+
+end
+
 
 
 end

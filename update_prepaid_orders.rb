@@ -41,11 +41,13 @@ module FixPrepaidOrders
             my_start_month_plus_str = my_start_month_plus.strftime("%Y-%m-%d")
             puts "my start_month_plus_str = #{my_start_month_plus_str}"
 
-            new_end = "2020-08-07"
+            new_end = "2020-10-07"
 
             #update_prepaid_sql = "insert into update_prepaid (order_id, transaction_id, charge_status, payment_processor, address_is_active, status, order_type, charge_id, address_id, shopify_id, shopify_order_id, shopify_cart_token, shipping_date, scheduled_at, shipped_date, processed_at, customer_id, first_name, last_name, is_prepaid, created_at, updated_at, email, line_items, total_price, shipping_address, billing_address, synced_at) select orders.order_id, orders.transaction_id, orders.charge_status, orders.payment_processor, orders.address_is_active, orders.status, orders.order_type, orders.charge_id, orders.address_id, orders.shopify_id, orders.shopify_order_id, orders.shopify_cart_token, orders.shipping_date, orders.scheduled_at, orders.shipped_date, orders.processed_at, orders.customer_id, orders.first_name, orders.last_name, orders.is_prepaid, orders.created_at, orders.updated_at, orders.email, orders.line_items, orders.total_price, orders.shipping_address, orders.billing_address, orders.synced_at from orders where  orders.is_prepaid = '1'  and orders.scheduled_at > \'#{my_end_month_str}\' and orders.scheduled_at < \'#{new_end}\' and orders.status = \'QUEUED\'  "
 
-            update_prepaid_sql = "insert into update_prepaid (order_id, transaction_id, charge_status, payment_processor, address_is_active, status, order_type, charge_id, address_id, shopify_id, shopify_order_id, shopify_cart_token, shipping_date, scheduled_at, shipped_date, processed_at, customer_id, first_name, last_name, is_prepaid, created_at, updated_at, email, line_items, total_price, shipping_address, billing_address, synced_at) select orders.order_id, orders.transaction_id, orders.charge_status, orders.payment_processor, orders.address_is_active, orders.status, orders.order_type, orders.charge_id, orders.address_id, orders.shopify_id, orders.shopify_order_id, orders.shopify_cart_token, orders.shipping_date, orders.scheduled_at, orders.shipped_date, orders.processed_at, orders.customer_id, orders.first_name, orders.last_name, orders.is_prepaid, orders.created_at, orders.updated_at, orders.email, orders.line_items, orders.total_price, orders.shipping_address, orders.billing_address, orders.synced_at from orders, order_collection_sizes where order_collection_sizes.order_id = orders.order_id and  orders.is_prepaid = '1'  and orders.scheduled_at > \'#{my_end_month_str}\' and orders.scheduled_at < \'#{my_start_month_plus_str}\' and orders.status = \'QUEUED\' and (order_collection_sizes.product_collection not ilike 'test%value%'  ) "
+            update_prepaid_sql = "insert into update_prepaid (order_id, transaction_id, charge_status, payment_processor, address_is_active, status, order_type, charge_id, address_id, shopify_id, shopify_order_id, shopify_cart_token, shipping_date, scheduled_at, shipped_date, processed_at, customer_id, first_name, last_name, is_prepaid, created_at, updated_at, email, line_items, total_price, shipping_address, billing_address, synced_at) select orders.order_id, orders.transaction_id, orders.charge_status, orders.payment_processor, orders.address_is_active, orders.status, orders.order_type, orders.charge_id, orders.address_id, orders.shopify_id, orders.shopify_order_id, orders.shopify_cart_token, orders.shipping_date, orders.scheduled_at, orders.shipped_date, orders.processed_at, orders.customer_id, orders.first_name, orders.last_name, orders.is_prepaid, orders.created_at, orders.updated_at, orders.email, orders.line_items, orders.total_price, orders.shipping_address, orders.billing_address, orders.synced_at from orders, order_collection_sizes where order_collection_sizes.order_id = orders.order_id and  orders.is_prepaid = '1'  and orders.scheduled_at > \'2020-10-31\' and orders.scheduled_at < \'2020-11-07\' and orders.status = \'QUEUED\' and (order_collection_sizes.product_collection not ilike 'funky%something%'  ) "
+
+            update_for_elliestaging_mix_match = "insert into update_prepaid (order_id, transaction_id, charge_status, payment_processor, address_is_active, status, order_type, charge_id, address_id, shopify_id, shopify_order_id, shopify_cart_token, shipping_date, scheduled_at, shipped_date, processed_at, customer_id, first_name, last_name, is_prepaid, created_at, updated_at, email, line_items, total_price, shipping_address, billing_address, synced_at) select orders.order_id, orders.transaction_id, orders.charge_status, orders.payment_processor, orders.address_is_active, orders.status, orders.order_type, orders.charge_id, orders.address_id, orders.shopify_id, orders.shopify_order_id, orders.shopify_cart_token, orders.shipping_date, orders.scheduled_at, orders.shipped_date, orders.processed_at, orders.customer_id, orders.first_name, orders.last_name, orders.is_prepaid, orders.created_at, orders.updated_at, orders.email, orders.line_items, orders.total_price, orders.shipping_address, orders.billing_address, orders.synced_at from orders, order_collection_sizes where order_collection_sizes.order_id = orders.order_id and  orders.is_prepaid = '1'  and orders.scheduled_at > \'2020-10-19\' and orders.scheduled_at < \'2020-11-01\' and orders.status = \'QUEUED\' and (order_collection_sizes.product_collection not ilike '%some%test%' and  order_collection_sizes.product_collection not ilike '%full%bloom%' ) "
 
             
 
@@ -73,10 +75,15 @@ module FixPrepaidOrders
             case temp_product_title
             when /\s2\sitem/i
                 product_information = {"title" => "3 Months - 2 Items", "product_id" => 2506238492730, "variant_id" => 23656253784122}
+                #product_information = {"title" => "3 Months - 2 Items", "product_id" => 2168707809331, "variant_id" => 18468097949747, "sku" => "764204317073" }
             when /\s3\sitem/i
                 product_information = {"title" => "3 Months - 3 Items", "product_id" => 2209786298426, "variant_id" => 22212749393978}
+                #product_information = {"title" => "3 Months - 3 Items", "product_id" => 1421100974131, "variant_id" => 15880479998003, "sku" => "764204317066"}
             when /\s5\sitem/i
                 product_information = {"title" => "3 Months - 5 Items", "product_id" => 2209789771834, "variant_id" => 22212763320378}
+                #product_information = {"title" => "3 Months - 5 Items", "product_id" => 1635509469235, "variant_id" => 15880480063539, "sku" => "764204317073"}
+                #puts "Got a 5 Item"
+                
             
             else
                 product_information = {}  
@@ -86,16 +93,21 @@ module FixPrepaidOrders
             temp_order.line_items[0].tap {|myh| myh.delete('shopify_product_id')}
             temp_order.line_items[0].tap {|myh| myh.delete('images')}
             temp_order.line_items[0].tap {|myh| myh.delete('tax_lines')}
+            temp_order.line_items[0].tap {|myh| myh.delete('external_inventory_policy')}
+
             temp_order.line_items[0]['product_id'] = product_information['product_id']
             temp_order.line_items[0]['variant_id'] = product_information['variant_id']
             temp_order.line_items[0]['quantity'] = 1
             temp_order.line_items[0]['title'] = product_information['title']
             temp_order.line_items[0]['product_title'] = product_information['title']
+            temp_order.line_items[0]['sku'] = product_information['sku']
+
 
             puts "+++++++++++++++++++++++++++++"
             puts "Sending to ReCharge:"
             puts temp_order.line_items.inspect
             puts "++++++++++++++++++++++++++++"
+            
 
             #Send to Recharge
             my_data = { "line_items" => temp_order.line_items }
@@ -105,7 +117,7 @@ module FixPrepaidOrders
             determine_limits(recharge_header, 0.65)
             puts "sleeping 2 secs"
             sleep 2
-
+            
 
 
           end
@@ -150,13 +162,13 @@ module FixPrepaidOrders
 
                 case my_title
                 when /\s2\sitem/i
-                    my_product_collection = "Solar Flare - 2 Items"
+                    my_product_collection = "Mix and Match - 2 Items"
                 when /\s3\sitem/i
-                    my_product_collection = "Solar Flare - 3 Items"
+                    my_product_collection = "Mix and Match - 3 Items"
                 when /\s5\sitem/i
-                    my_product_collection = "Solar Flare - 5 Items"
+                    my_product_collection = "Mix and Match - 5 Items"
                 when "3 MONTHS"
-                    my_product_collection = "Solar Flare - 5 Items"
+                    my_product_collection = "Mix and Match - 5 Items"
                 end
 
 
@@ -328,11 +340,11 @@ module FixPrepaidOrders
                 end
 
                 #Commented out below to remove size break functionality for inventory
-                allocate_ok = can_allocate(temp_tops, temp_leggings, temp_sports_bra, two_item_collection)
-                puts allocate_ok
+                #allocate_ok = can_allocate(temp_tops, temp_leggings, temp_sports_bra, two_item_collection)
+                #puts allocate_ok
 
 
-                #allocate_ok = true
+                allocate_ok = true
                 if allocate_ok
                     #myord.is_updated = 't'
                     #myord.save!
@@ -348,38 +360,72 @@ module FixPrepaidOrders
                     myord.line_items[0].tap {|myh| myh.delete('shopify_product_id')}
                     myord.line_items[0].tap {|myh| myh.delete('images')}
                     myord.line_items[0].tap {|myh| myh.delete('tax_lines')}
+                    myord.line_items[0].tap {|myh| myh.delete('external_inventory_policy')}
                     myord.line_items[0]['product_id'] = new_order_info.product_id.to_i
                     myord.line_items[0]['variant_id'] = new_order_info.variant_id.to_i
                     myord.line_items[0]['quantity'] = 1
                     myord.line_items[0]['title'] = new_order_info.title
                     myord.line_items = update_product_collection(myord.line_items, new_order_info.product_collection)
 
+                    #Floyd Wallace 10/14/2020
+                    #add raw_skus to properties for testing on EllieSTaging.
+                    #skus_for_tops = [722457990948, 764204207466, 764204207473, 764204207480, 764204112531, 764204099450, 764204099467, 764204099474, 764204099481, 764204112548, 764204099535, 764204099542, 764204099559, 764204099566].sample
+                    #skus_for_leggings = [764204295937, 764204295944, 764204295951, 764204295968, 764204296088, 764204296095, 764204296101, 764204296118, 764204295982, 764204295999, 764204296002, 764204296019].sample
+                    #skus_for_bras = [722457854059, 722457854066, 722457854073, 722457854080, 764204475001, 764204475018, 764204475025, 764204475032, 764204475049, 764204126927, 764204126934, 764204126941, 764204126958, 764204126965].sample
+                    #skus_for_accessories = [722457706419, 722457833986, 764204325917, 764204368143, 764204380930, 722457921331, 764204242665, 764204243839].sample
+                    #skus_for_equipment = [745934207032, 764204359745, 764204134199, 764204376841, 764204243822, 764204241460, 731899210309, 764204161799].sample
+
+                   # mylist = ""
+
+
+                   # case myord.line_items[0]['title']
+                   #     when /\s2\sitem/i
+                   #         mylist = "#{skus_for_tops}, #{skus_for_leggings}"
+                   #     when /\s3\sitem/i
+                   #         mylist = "#{skus_for_tops}, #{skus_for_leggings}, #{skus_for_bras}"
+                   #     when /\s5\sitem/i
+                   #         mylist = "#{skus_for_tops}, #{skus_for_leggings}, #{skus_for_bras}, #{skus_for_accessories}, #{skus_for_equipment}"
+                    #    when "3 MONTHS"
+                    #        mylist = "#{skus_for_tops}, #{skus_for_leggings}, #{skus_for_bras}, #{skus_for_accessories}, #{skus_for_equipment}"
+                    #    else
+                    #        mylist = "#{skus_for_tops}, #{skus_for_leggings}, #{skus_for_bras}, #{skus_for_accessories}, #{skus_for_equipment}"
+                    #end
+
+
+
+
+                    #myord.line_items[0]['properties'] << { "name" => "raw_skus", "value" => mylist}
+
+
+
+
+
                     #Adding outfit_id key/value pair for Scoutside
-                    outfit_id = 999
-                    case new_order_info.product_collection
-                    when /\s2\sitem/i
-                        outfit_id = 4541680418874
-                    when /\s3\sitem/i
-                        outfit_id = 4541680549946
-                    when /\s5\sitem/i
-                        outfit_id = 4543652200506
-                    else
-                        outfit_id = 8888
-                    end
+                    #outfit_id = 999
+                    #case new_order_info.product_collection
+                    #when /\s2\sitem/i
+                    #    outfit_id = 4541684613178
+                    #when /\s3\sitem/i
+                    #    outfit_id = 4541684744250
+                    #when /\s5\sitem/i
+                    #    outfit_id = 4541685858362
+                    #else
+                    #    outfit_id = 8888
+                    #end
 
-                    temp_outfit_id_h = my_temp_line_item.select { |x| x['name'] == 'oufit_id' }
-                    if temp_outfit_id_h != []
+                    #temp_outfit_id_h = my_temp_line_item.select { |x| x['name'] == 'oufit_id' }
+                    #if temp_outfit_id_h != []
                         #update the json value with new outfit_id value
-                        myord.line_items.first['properties'].map do |myt|
-                            if myt['name'] == 'oufit_id'
-                                myt['value'] = outfit_id
-                            end
+                    #    myord.line_items.first['properties'].map do |myt|
+                    #        if myt['name'] == 'oufit_id'
+                    #            myt['value'] = outfit_id
+                    #         end
 
-                        end
+                    #    end
 
-                    else
-                        myord.line_items.first['properties'] << {"name" => "outfit_id", "value" => outfit_id}
-                    end
+                    #else
+                    #    myord.line_items.first['properties'] << {"name" => "outfit_id", "value" => outfit_id}
+                    #end
 
 
 
@@ -388,7 +434,7 @@ module FixPrepaidOrders
                     puts "Sending to ReCharge:"
                     puts myord.line_items.inspect
                     puts "++++++++++++++++++++++++++++"
-                    
+                   
 
                     #Send to Recharge
                     my_data = { "line_items" => myord.line_items }
@@ -456,17 +502,21 @@ module FixPrepaidOrders
 
             case sub.product_title
             when /\s2\sitem/i
-                product_information = {"title" => "3 Months - 2 Items", "product_id" => 2506238492730, "variant_id" => 23656253784122, "sku" => "764204763023" }
+                #product_information = {"title" => "3 Months - 2 Items", "product_id" => 2506238492730, "variant_id" => 23656253784122, "sku" => "764204763023" }
+                product_information = {"title" => "3 Months - 2 Items", "product_id" => 2168707809331, "variant_id" => 18468097949747, "sku" => "764204317073" }
+
             when /\s3\sitem/i
-                product_information = {"title" => "3 Months - 3 Items", "product_id" => 2209786298426, "variant_id" => 22212749393978, "sku" => "764204317066"}
+                #product_information = {"title" => "3 Months - 3 Items", "product_id" => 2209786298426, "variant_id" => 22212749393978, "sku" => "764204317066"}
+                product_information = {"title" => "3 Months - 3 Items", "product_id" => 1421100974131, "variant_id" => 15880479998003, "sku" => "764204317066"}
             when /\s5\sitem/i
-                product_information = {"title" => "3 Months - 5 Items", "product_id" => 2209789771834, "variant_id" => 22212763320378, "sku" => "764204317073"}
+                #product_information = {"title" => "3 Months - 5 Items", "product_id" => 2209789771834, "variant_id" => 22212763320378, "sku" => "764204317073"}
+                {"title" => "3 Months - 5 Items", "product_id" => 1635509469235, "variant_id" => 15880480063539, "sku" => "764204317073"}
             
             else
                 product_information = {}  
             end
 
-            send_to_recharge = { "sku" => product_information['sku'], "product_title" => product_information['title'], "shopify_product_id" => product_information['product_id'], "shopify_variant_id" => product_information['variant_id'], "properties" => sub.raw_line_items }
+            send_to_recharge = { "sku" => product_information['sku'], "product_title" => product_information['title'], "shopify_product_id" => product_information['product_id'], "shopify_variant_id" => product_information['variant_id'], "properties" => sub.raw_line_item_properties }
             puts "Sending to Recharge:"
             puts "++++++++++++++++++++++++"
             puts send_to_recharge.inspect
@@ -487,23 +537,100 @@ module FixPrepaidOrders
           def fix_scoutside_prepaid_subs
             puts "Starting to fix Scoutside prepaid subs"
 
-            num_subs_fix = 0
-            mysubs = PrepaidSubscriptionUpdated.all
-            mysubs.each do |mysub|
-                temp_product_title = mysub.product_title
+            #num_subs_fix = 0
+            #mysubs = PrepaidSubscriptionUpdated.all
+            #mysubs.each do |mysub|
+            #    temp_product_title = mysub.product_title
 
-                if temp_product_title !~ /month/i
-                    puts "#{temp_product_title}"
-                    num_subs_fix += 1
-                    fix_one_prepaid_sub(mysub)
+            #    if temp_product_title !~ /month/i
+            #        puts "#{temp_product_title}"
+            #        num_subs_fix += 1
+            #        fix_one_prepaid_sub(mysub)
 
-                end
+           #     end
 
-            end
-            puts "We have #{num_subs_fix} subs to fix"
+           # end
+          #  puts "We have #{num_subs_fix} subs to fix"
+
+          #New Approach use subscriptions with mismatch in is_prepaid attribute and product_title
+          my_bad_subs = Subscription.where("is_prepaid = ? and product_title not ilike '3%month%' ", true)
+          num_bad_subs = my_bad_subs.count
+          puts "Fixing #{num_bad_subs} bad prepaid subs"
+
+          PrepaidSubscriptionUpdated.delete_all
+            
+          ActiveRecord::Base.connection.reset_pk_sequence!('prepaid_subscriptions_updated')
+          
+          my_bad_subs.each do |mybad|
+            puts mybad.subscription_id
+            PrepaidSubscriptionUpdated.create(subscription_id: mybad.subscription_id, customer_id: mybad.customer_id, updated_at: mybad.updated_at, next_charge_scheduled_at: mybad.next_charge_scheduled_at, product_title: mybad.product_title, status: mybad.status, sku: mybad.sku, shopify_product_id: mybad.shopify_product_id, shopify_variant_id: mybad.shopify_variant_id,  raw_line_items: mybad.raw_line_item_properties, created_at: mybad.created_at)
+
+            fix_one_prepaid_sub(mybad)
+
+          end
+
 
 
           end
+
+          def check_child_orders_fixed_subs
+            puts "Checking child orders for subs"
+
+            my_prepaid_subs = PrepaidSubscriptionUpdated.all
+            my_prepaid_subs.each do |myp|
+                temp_customer = myp.customer_id
+                puts "customer id #{temp_customer} - subscription_id: #{myp.subscription_id}"
+                my_orders = Order.where("customer_id = ? and is_prepaid = ? and scheduled_at > '2020-09-30' and scheduled_at < '2020-11-01' ", temp_customer, "1")
+                puts "------"
+                my_orders.each do |myord|
+                    puts myord.inspect
+                    puts "**********"
+                    temp_line_items = myord.line_items.first
+                    #puts temp_line_items.inspect
+                    puts "#{temp_line_items['title']}, #{temp_line_items['product_title']}, #{temp_line_items['price']}, #{temp_line_items['properties']}"
+                end
+                puts "------"
+
+
+            end
+
+
+          end
+
+
+          def scoutside_subs_check_product_collection
+            puts "Starting check ..."
+            my_temp = PrepaidSubscriptionUpdated.all
+
+            num_bad_collections = 0
+
+            my_temp.each do |myt|
+                puts myt.subscription_id
+                #puts myt.raw_line_items.inspect
+                prod_coll = myt.raw_line_items.select{ |x| x['name'] == 'product_collection'}
+                #puts prod_coll.inspect
+                #puts prod_coll.first['value']
+                temp_prod_coll = prod_coll.first['value']
+                if ( temp_prod_coll =~ /urban/i || temp_prod_coll =~ /free/i || temp_prod_coll =~ /solar/i || temp_prod_coll =~ /lunar/i  || temp_prod_coll =~ /heart\sfelt/i || temp_prod_coll =~ /chill/i  || temp_prod_coll =~ /press/i  || temp_prod_coll =~ /wine\snot/i  || temp_prod_coll =~ /pacific\screst/i  || temp_prod_coll =~ /mint\scondition/i  || temp_prod_coll =~ /laguna/i )
+                puts "collection OK"
+                puts "Deleting sub out of table"
+                myt.delete
+
+                else
+                    puts "collection not OK"
+                    puts temp_prod_coll
+                    num_bad_collections += 1
+                end
+
+            end
+            puts "We have #{num_bad_collections} bad collections"
+
+          end
+
+          
+
+
+
 
           def load_prepaid_subs_config
             PrepaidSubscriptionConfig.delete_all
@@ -518,13 +645,13 @@ module FixPrepaidOrders
 
                 case my_title
                 when /\s2\sitem/i
-                    my_product_collection = "Solar Flare - 2 Items"
+                    my_product_collection = "Mix and Match - 2 Items"
                 when /\s3\sitem/i
-                    my_product_collection = "Solar Flare - 3 Items"
+                    my_product_collection = "Mix and Match - 3 Items"
                 when /\s5\sitem/i
-                    my_product_collection = "Solar Flare - 5 Items"
+                    my_product_collection = "Mix and Match - 5 Items"
                 when "3 MONTHS"
-                    my_product_collection = "Solar Flare - 5 Items"
+                    my_product_collection = "Mix and Match - 5 Items"
                 end
 
                 PrepaidSubscriptionConfig.create(product_title: row['product_title'], shopify_product_id: row['shopify_product_id'], product_collection: my_product_collection)
@@ -536,11 +663,7 @@ module FixPrepaidOrders
                 puts myc.inspect
             end
             puts "All done setting up prepaid config table for SUBS!"
-
-
-
             
-
           end
 
 
@@ -561,39 +684,56 @@ module FixPrepaidOrders
                 
 
                 #Add outfit_id stuff for Scoutside here
-                outfit_id = 999
-                case my_product_collection.product_collection
-                    when /\s2\sitem/i
-                        outfit_id = 4541680418874
-                    when /\s3\sitem/i
-                        outfit_id = 4541680549946
-                    when /\s5\sitem/i
-                        outfit_id = 4543652200506
-                    else
-                        outfit_id = 8888
-                end
+                #outfit_id = 999
+                #case my_product_collection.product_collection
+                #    when /\s2\sitem/i
+                #        outfit_id = 4541684613178
+                #    when /\s3\sitem/i
+                #        outfit_id = 4541684744250
+                #    when /\s5\sitem/i
+                #        outfit_id = 4541685858362
+                #    else
+                #        outfit_id = 8888
+                #end
 
-                found_outfit_id = false
+                #found_outfit_id = false
                 temp_line_items.map do |mystuff|
                     # puts "#{key}, #{value}"
                     if mystuff['name'] == 'product_collection'
                       mystuff['value'] = my_product_collection.product_collection
                       
                     end
-                    if mystuff['name'] == "outfit_id"
-                        mystuff['value'] = outfit_id
-                        found_outfit_id = true
-                    end
+                    #if mystuff['name'] == "outfit_id"
+                    #    mystuff['value'] = outfit_id
+                    #    found_outfit_id = true
+                    #end
                 end
                 
-                if found_outfit_id == false
-                    temp_line_items << {"name" => "outfit_id", "value" => outfit_id}
-                end
+                #if found_outfit_id == false
+                #    temp_line_items << {"name" => "outfit_id", "value" => outfit_id}
+                #end
+
+                my_sql = "select order_line_items_fixed.order_id from order_line_items_fixed, update_prepaid where order_line_items_fixed.subscription_id = \'#{mysub.subscription_id}\' and order_line_items_fixed.order_id = update_prepaid.order_id"
+
+                my_result = ActiveRecord::Base.connection.execute(my_sql).values.first.first
+                puts my_result.inspect
+                my_order = UpdatePrepaidOrder.find_by_order_id(my_result)
+                puts my_order.line_items[0]['properties'].inspect
+                my_raw_skus_temp = my_order.line_items[0]['properties'].select { |x| x['name'] == 'raw_skus'}
+                puts my_raw_skus_temp
+                
+                
+
+
+
+                temp_line_items << my_raw_skus_temp.first
 
 
 
                 puts "Send to Recharge properties: #{temp_line_items}"
                 send_to_recharge = { "properties" => temp_line_items }
+                
+                
                 
 
                 body = send_to_recharge.to_json
@@ -602,6 +742,7 @@ module FixPrepaidOrders
                 puts my_update_sub.inspect
                 recharge_header = my_update_sub.response["x-recharge-limit"]
                 determine_limits(recharge_header, 0.65)
+                
 
                 if my_update_sub.code == 200
                     mysub.updated = true
@@ -614,7 +755,7 @@ module FixPrepaidOrders
                 else
                     puts "Could not update prepaid subscription!"
                 end
-                
+                #exit
 
 
             end
@@ -622,8 +763,108 @@ module FixPrepaidOrders
 
           end
 
+          def setup_fix_prepaid_orders_missing_price
+            update_prepaid_sql = "insert into update_prepaid (order_id, transaction_id, charge_status, payment_processor, address_is_active, status, order_type, charge_id, address_id, shopify_id, shopify_order_id, shopify_cart_token, shipping_date, scheduled_at, shipped_date, processed_at, customer_id, first_name, last_name, is_prepaid, created_at, updated_at, email, line_items, total_price, shipping_address, billing_address, synced_at) select orders.order_id, orders.transaction_id, orders.charge_status, orders.payment_processor, orders.address_is_active, orders.status, orders.order_type, orders.charge_id, orders.address_id, orders.shopify_id, orders.shopify_order_id, orders.shopify_cart_token, orders.shipping_date, orders.scheduled_at, orders.shipped_date, orders.processed_at, orders.customer_id, orders.first_name, orders.last_name, orders.is_prepaid, orders.created_at, orders.updated_at, orders.email, orders.line_items, orders.total_price, orders.shipping_address, orders.billing_address, orders.synced_at from orders, order_line_items_fixed where order_line_items_fixed.order_id = orders.order_id and orders.is_prepaid = '1' and orders.scheduled_at > '2020-10-05' and order_line_items_fixed.is_line_item_price_present = 'f' and orders.status = 'QUEUED' "
+
+            
 
 
+            UpdatePrepaidOrder.delete_all
+            
+            ActiveRecord::Base.connection.reset_pk_sequence!('update_prepaid')
+            ActiveRecord::Base.connection.execute(update_prepaid_sql)
+            puts "Done"
+
+
+          end
+
+          def update_broken_price_prepaid_orders
+            puts "Starting update prepaid orders broken price"
+
+            num_missing_subs = 0
+            num_non_matching_product_title = 0
+
+            column_header = ["order_id", "transaction_id", "charge_status", "payment_processor", "address_is_active", "status", "order_type", "charge_id", "address_id", "shopify_id", "shopify_order_id", "shopify_cart_token", "shipping_date", "scheduled_at", "shipped_date", "processed_at", "customer_id", "first_name", "last_name", "is_prepaid", "created_at", "updated_at", "email", "total_price", "line_items"]
+
+            File.delete('prepaid_order_missing_sub.csv') if File.exist?('prepaid_order_missing_sub.csv')
+            CSV.open('prepaid_order_missing_sub.csv','a+', :write_headers=> true, :headers => column_header) do |hdr|
+            column_header = nil
+
+            
+            my_orders = UpdatePrepaidOrder.where("is_updated = ?", false)
+            my_orders.each do |myord|
+                puts myord.inspect
+                customer_id = myord.customer_id
+                line_items = myord.line_items
+                product_title = ""
+                puts "-------------------"
+                puts "Customer_id = #{customer_id}, line_items = #{line_items}"
+                my_subscriptions = Subscription.find_by_customer_id(customer_id)
+                #puts my_subscriptions.inspect
+                if !my_subscriptions.nil?
+                    puts my_subscriptions.inspect
+                    product_title = my_subscriptions.product_title
+                    if product_title =~ /3\smonth/i
+                        puts "Found matching product title to get valid subscription id"
+                        #In here add missing subscription_id and price.
+                        my_subscription_id = my_subscriptions.subscription_id
+                        puts "****************"
+                        puts line_items.inspect
+                        puts "****************"
+                        shopify_product_id = line_items[0]['shopify_product_id']
+                        shopify_variant_id = line_items[0]['shopify_variant_id']
+                        myord.line_items[0].tap {|myh| myh.delete('shopify_variant_id')}
+                        myord.line_items[0].tap {|myh| myh.delete('shopify_product_id')}
+                        myord.line_items[0].tap {|myh| myh.delete('images')}
+                        myord.line_items[0].tap {|myh| myh.delete('tax_lines')}
+                        myord.line_items[0]['product_id'] = shopify_product_id.to_i
+                        myord.line_items[0]['variant_id'] = shopify_variant_id.to_i
+                        myord.line_items[0]['price'] = "0.00"
+                        myord.line_items[0]['subscription_id'] = my_subscription_id.to_i
+                        puts "After Changes:"
+                        puts "@@@@@@@@@@@@@@@@@@@@@@@"
+                        puts line_items.inspect
+                        puts "@@@@@@@@@@@@@@@@@@@@@@@"
+
+                        my_data = { "line_items" => myord.line_items }
+                        my_update_order = HTTParty.put("https://api.rechargeapps.com/orders/#{myord.order_id}", :headers => @my_change_charge_header, :body => my_data.to_json, :timeout => 80)
+                        puts my_update_order.inspect
+                        recharge_header = my_update_order.response["x-recharge-limit"]
+                        determine_limits(recharge_header, 0.65)
+                        if my_update_order.code == 200
+                            myord.is_updated = 't'
+                            time_updated = DateTime.now
+                            time_updated_str = time_updated.strftime("%Y-%m-%d %H:%M:%S")
+                            myord.updated_at = time_updated_str
+                            myord.save!
+                            puts "Updated order id = #{myord.order_id}"
+        
+                        else
+                            puts "WE could not update the order order_id = #{myord.order_id}"
+        
+                        end
+                        
+
+                    else
+                        num_non_matching_product_title += 1
+                    end
+                else
+                    puts "Nil subscription"
+                    num_missing_subs += 1
+                    
+                    csv_data_out = [myord.order_id, myord.transaction_id, myord.charge_status, myord.payment_processor, myord.address_is_active, myord.status, myord.order_type, myord.charge_id, myord.address_id, myord.shopify_id, myord.shopify_order_id, myord.shopify_cart_token, myord.shipping_date, myord.scheduled_at, myord.shipped_date, myord.processed_at, myord.customer_id, myord.first_name, myord.last_name, myord.is_prepaid, myord.created_at, myord.updated_at, myord.email, myord.total_price, myord.line_items]
+                    hdr << csv_data_out
+                end
+
+            end
+        end
+        #end of csv part
+            puts "We have #{num_missing_subs} orders with missing subscription info"
+            puts "We have #{num_non_matching_product_title} orders where we cannot match product_title"
+
+
+          end
+          
 
 
 
