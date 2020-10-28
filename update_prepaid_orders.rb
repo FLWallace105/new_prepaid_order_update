@@ -228,7 +228,7 @@ module FixPrepaidOrders
 
             unless two_item
                 jacket_avail_inventory = OrderUpdatedInventorySize.where("product_type = ? and product_size = ?", "sports-jacket", jacket).first
-                if bra_avail_inventory.inventory_avail > 0
+                if jacket_avail_inventory.inventory_avail > 0
                     jacket_avail = true
                 else
                     jacket_avail = false
