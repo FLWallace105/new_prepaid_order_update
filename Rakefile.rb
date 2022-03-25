@@ -14,6 +14,17 @@ task :setup_prepaid_orders do |t|
     FixPrepaidOrders::ChangePrepaid.new.setup_prepaid_orders
 end
 
+desc 'change elliestaging order dates'
+task :change_elliestaging_order_dates do |t|
+    FixPrepaidOrders::ChangePrepaid.new.change_date_elliestaging
+end
+
+desc 'update missing sizes'
+task :update_missing_sizes_orders do |t|
+    FixPrepaidOrders::ChangePrepaid.new.update_missing_sizes
+
+end
+
 desc 'setup prepaid config table'
 task :setup_prepaid_config do |t|
     FixPrepaidOrders::ChangePrepaid.new.setup_prepaid_config
@@ -36,7 +47,7 @@ task :setup_subs_config_info do |t|
     FixPrepaidOrders::ChangePrepaid.new.load_prepaid_subs_config
 end
 
-desc 'upate orders in Recharge'
+desc 'update orders in Recharge'
 task :update_orders do |t|
     FixPrepaidOrders::ChangePrepaid.new.update_prepaid_orders
 
